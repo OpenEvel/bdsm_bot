@@ -62,5 +62,5 @@ if __name__ == "__main__":
 
 
             bot_inf = bot.get_me() 
-            print(f'Отправь мне что-то https://t.me/{bot_inf.username}')
+            print(f'Отправь мне что-нибудь https://t.me/{bot_inf.username}')
             bot.infinity_polling()
