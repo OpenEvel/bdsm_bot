@@ -35,7 +35,7 @@ if __name__ == "__main__":
             def repeat_all_messages(message: Message): # Название функции не играет никакой роли
                 ADMIN_ID = message.from_user.id
                 config_content = config_template.format(TOKEN=TOKEN, ADMIN_ID=ADMIN_ID)
-                f = open('config.py', 'w')
+                f = open('config.py', 'w', encoding='utf-8')
                 f.write(config_content)
                 f.close()
                 bot.send_message(message.chat.id, 'Конфиг обновлён')
