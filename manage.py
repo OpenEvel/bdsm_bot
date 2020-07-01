@@ -105,7 +105,7 @@ if __name__ == "__main__":
     if '--config' in args:
         if 'visible' in args:
             os.system("git update-index --no-assume-unchanged config.py")
-        elif 'load' in args:
+        elif 'reset' in args:
             #делаем запрос на файл конфига
             send = urlopen('https://github.com/OpenEvel/bdsm_bot/raw/master/config.py')
             config_content = send.read().decode('utf8')
