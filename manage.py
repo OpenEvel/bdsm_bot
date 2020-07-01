@@ -112,6 +112,8 @@ if __name__ == "__main__":
             args.remove('--config')
             if '--install' in args:
                 args.remove("--install")
+            if '-v' in args:
+                args.remove("-v")
             if args:
                 TOKEN = args[0]
             else:
