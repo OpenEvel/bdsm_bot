@@ -25,7 +25,7 @@ def status_bar(title:str=None, *, command:str, ts:float=0.25):
     animations = ['|', '/', '-', '\\' ]  # Элементы анимации статус бара
 
     # Запускаем комманду command через subprocess
-    process = subprocess.Popen(command,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(command,  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     i_a = -1
     while True:
@@ -76,6 +76,10 @@ if __name__ == "__main__":
             status_bar("making 'venv' directory", command="python -m venv venv")
             status_bar("upgrading pip", command='.\\venv\\Scripts\\pip install --upgrade pip --user')
             status_bar("pip installing requirements(python libraries)", command=".\\venv\\Scripts\\pip install -r .\\set_env\\requirements.txt")
+        else:
+            status_bar("making 'venv' directory", command="python3 -m venv venv")
+            status_bar("upgrading pip", command='./venv/bin/pip install --upgrade pip --user')
+            status_bar("pip installing requirements(python libraries)", command="./venv/bin/pip install -r ./set_env/requirements.txt")
 
     if '--config' in args:
         if 'visible' in args:
@@ -102,3 +106,5 @@ if __name__ == "__main__":
             # Устанавливаем файл настроек для работы бота
             if is_win():
                 os.system(f'.\\venv\\Scripts\\python .\\set_env\\install_config.py {TOKEN}')
+            else:
+                os.system(f'./venv/bin/python ./set_env/install_config.py {TOKEN}')
