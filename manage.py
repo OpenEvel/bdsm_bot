@@ -3,6 +3,8 @@ import os
 import sys
 import time
 import subprocess
+import json
+import shutil
 
 def is_win():
     return 'win' in sys.platform
@@ -80,6 +82,24 @@ if __name__ == "__main__":
             status_bar("making 'venv' directory", command="python3 -m venv venv")
             status_bar("upgrading pip", command='./venv/bin/pip install --upgrade pip --user')
             status_bar("pip installing requirements(python libraries)", command="./venv/bin/pip install -r ./set_env/requirements.txt")
+    
+    if '-v':
+        path_settings = os.path.normpath("./set_env/vscode/settings.json")
+        with open(path_settings, "r", encoding='utf8') as read_file:
+            settings = json.load(read_file)
+        
+        pythonPath = '.\\venv\\Scripts\\python' if is_win() else "./venv/bin/python"
+        settings['python.pythonPath'] = pythonPath
+
+        if not os.path.exists(".vscode"):
+            os.mkdir('.vscode')
+
+        with open(os.path.normpath(".vscode/settings.json"), "w", encoding='utf8') as write_file:
+            json.dump(settings, write_file)
+        
+        shutil.copy(os.path.normpath("./set_env/vscode/launch.json"), os.path.normpath(".vscode/launch.json"))
+        
+        
 
     if '--config' in args:
         if 'visible' in args:
