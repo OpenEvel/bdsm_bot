@@ -5,6 +5,7 @@ import time
 import subprocess
 import json
 import shutil
+import requests
 
 def is_win():
     return 'win' in sys.platform
@@ -104,6 +105,13 @@ if __name__ == "__main__":
     if '--config' in args:
         if 'visible' in args:
             os.system("git update-index --no-assume-unchanged config.py")
+        elif 'load' in args:
+            #делаем запрос на файл конфига
+            send = requests.post('https://github.com/OpenEvel/bdsm_bot/raw/master/config.py')
+            # Открываем файл на запись
+            with open('config.py', 'w', encoding='utf8') as conf_file:
+                conf_file.write(send.text)
+            
         else:
             # Делаем config.py невидимым для git
             os.system("git update-index --assume-unchanged config.py")
