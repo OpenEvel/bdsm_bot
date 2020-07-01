@@ -84,7 +84,7 @@ if __name__ == "__main__":
             status_bar("upgrading pip", command='./venv/bin/pip install --upgrade pip --user')
             status_bar("pip installing requirements(python libraries)", command="./venv/bin/pip install -r ./set_env/requirements.txt")
     
-    if '-v':
+    if '-v' in args:
         path_settings = os.path.normpath("./set_env/vscode/settings.json")
         with open(path_settings, "r", encoding='utf8') as read_file:
             settings = json.load(read_file)
