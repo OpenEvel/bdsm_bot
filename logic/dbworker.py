@@ -2,7 +2,6 @@
 import config
 import abc              # для создания абстрактных классов
 import sqlite3          # Для подключения к БД
-from vedis import Vedis # для работы с хранилищем состояний
 
 class User:
     """
@@ -57,31 +56,3 @@ class DBWorker(abc.ABC):
     def count(self):
         """Количество записей в таблице"""
         pass
-
-
-# Работаем теперь с СОСТОЯНИЯМИ пользоватлей
-def get_current_state(user_id):
-    """
-    Пытаемся узнать из базы состояний "состояние" пользователя
-    """
-    with Vedis(config.DB_STATES) as db:
-        try:
-            state = db[user_id].decode()
-        except KeyError: # если такого ключа не оказалось
-            # берём значение по умолчанию
-            state = config.States.START_ENTER.value
-        return state
-
-
-def set_state(user_id, value):
-    """
-    Сохраняем текущее «состояние» пользователя в нашу базу состояний
-    """
-    with Vedis(config.DB_STATES) as db:
-        try:
-            db[user_id] = value
-            return True
-        except:
-            # тут желательно как-то обработать ситуацию
-            # но врядли что-то такое случится
-            return False
