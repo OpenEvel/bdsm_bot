@@ -73,8 +73,14 @@ class AdminWorker(DBWorker):
         else:
             user_id = user.id
         
-        with self.connection:
-            self.cursor.execute(f"DELETE FROM {AdminWorker.TABLE} WHERE id=?", (user_id,))
+        if not self._is(user_id):
+            # Пользователь не админ, значит удалять его и не надо
+            return False
+        else:
+            with self.connection:
+                self.cursor.execute(f"DELETE FROM {AdminWorker.TABLE} WHERE id=?", (user_id,))
+            # Админа удалили все прошло успешно
+            return True
     
     def count(self):
         """Получаем количество админов в таблице"""

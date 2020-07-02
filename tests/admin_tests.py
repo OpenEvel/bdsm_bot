@@ -97,6 +97,35 @@ class TestAdmin(unittest.TestCase):
         answer = a0 and a1 and a2
         self.assertEqual(answer, True, "Админы не совпали")
 
+    def test_del_admin_by_id(self):
+        """Удалить админа из таблицы по id"""
+
+        count = self.adminer.remove(2)
+        count+= self.adminer.remove(3)
+        count+= self.adminer.remove(1)
+
+        self.assertEqual(count, 3, "Успешное удаление должно было случиться 3 раза")
+
+    def test_del_admin_by_object(self):
+        """Удалить админа из таблицы, когда передаётся объект Admin"""
+        list_admins = [(1, 'a', 'aa', 'aaa'),
+                      (2, 'b', 'bb', 'bbb'),
+                      (3, 'c', 'cc', 'ccc')]
+        a1, a2, a3 = [admins.tabler.Admin(*admin) for admin in list_admins]
+
+        count = self.adminer.remove(a2)
+        count+= self.adminer.remove(a3)
+        count+= self.adminer.remove(a1)
+
+        self.assertEqual(count, 3, "Успешное удаление должно было случиться 3 раза")
+
+    def test_del_admin_who_is_not_in_table(self):
+        """Удалить админа из таблицы по id"""
+
+        answer = self.adminer.remove(4)
+
+        self.assertEqual(answer, False, "В таблице нет такого админа")
+
 
 if __name__ == "__main__":
     unittest.main()
