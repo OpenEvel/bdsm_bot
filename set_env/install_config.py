@@ -2,14 +2,13 @@
 import os
 import sys
 import telebot
-from pprint import pprint
 
 workspace_folder = os.getcwd()
 
 sys.path.append(workspace_folder)
 
 import sqlite3
-from utils.admins.dber import AdminWorker
+from logic.admins.dber import AdminWorker
 
 if __name__ == "__main__":
     args = sys.argv[1:]
