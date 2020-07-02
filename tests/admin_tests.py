@@ -6,7 +6,7 @@ import sqlite3
 sys.path.append('..') # в vs code - не нужно
 # теперь можем импортировать модуль для работы с админами
 from utils import admins
-from utils.tools import full_path
+from config import full_path
 
 # имя тестовой базы данных
 dbname = full_path(__file__, 'test_db')
