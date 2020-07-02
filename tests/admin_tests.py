@@ -5,8 +5,8 @@ import sqlite3
 # Делаем видимыми модули уровнем выше для наших тестов
 sys.path.append('..') # в vs code - не нужно
 # теперь можем импортировать модуль для работы с админами
-from utils import admins
-from config import full_path
+from logic import admins
+from tools import full_path
 
 # имя тестовой базы данных
 dbname = full_path(__file__, 'test_db')

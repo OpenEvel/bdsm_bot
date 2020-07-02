@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
+from tools import full_path
 
 TOKEN = 'YOUR_TOKEN'
 ADMIN_ID = 'YUOR_ID' # Должно быть число а не строка
