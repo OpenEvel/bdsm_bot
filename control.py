@@ -10,25 +10,22 @@ from urllib.request import urlopen
 def is_win():
     return 'win' in sys.platform
 
-ENCODING_CONSOLE = 'cp1251' if is_win() else 'utf8'
-
 def status_bar(title:str=None, *, command:str, ts:float=0.25):
     """
         title   : сообщение пользователю (что будет выводиться вместо самой комманды)
         command : комманда оболочки (что выполняется)
         ts      : интервал времени между анимацией статус бара
     """
+    ENCODING_CONSOLE = 'cp1251' if is_win() else 'utf8'
+
     if not title:
         title = command
-
-    # На всякий случай очищаем title от лишних пробелов(для красоты форматирования)
-    title = title.strip()
 
     write, flush = sys.stdout.write, sys.stdout.flush
     animations = ['|', '/', '-', '\\' ]  # Элементы анимации статус бара
 
     # Запускаем комманду command через subprocess
-    process = subprocess.Popen(command,  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     i_a = -1
     while True:
@@ -72,18 +69,32 @@ def status_bar(title:str=None, *, command:str, ts:float=0.25):
         time.sleep(ts)
 
 if __name__ == "__main__":
+    # Переменные командной строки
+    # Представляет собой список всех слов, что идут после control
+    # в командве: python -m control --config --install -v и тд
     args = sys.argv[1:]
 
+    # Установить виртуальное окружение со всеми библиотеками
     if '--install' in args:
-        if is_win():
-            status_bar("making 'venv' directory", command="python -m venv venv")
-            status_bar("upgrading pip", command='.\\venv\\Scripts\\pip install --upgrade pip --user')
-            status_bar("pip installing requirements(python libraries)", command=".\\venv\\Scripts\\pip install -r .\\set_env\\requirements.txt")
-        else:
-            status_bar("making 'venv' directory", command="python3 -m venv venv")
-            status_bar("upgrading pip", command='./venv/bin/pip install --upgrade pip --user')
-            status_bar("pip installing requirements(python libraries)", command="./venv/bin/pip install -r ./set_env/requirements.txt")
+        # Системный интерпретатор python
+        python_global_exe = "python" if is_win() else 'python3'
+        # Создаём виртуальное окружение
+        status_bar("making 'venv' directory", command=f"{python_global_exe} -m venv venv")
+
+        # pip из виртуального окружения
+        pip_exe = ".\\venv\\Scripts\\pip" if is_win() else ".venv/bin/pip"
+        # Обновляем pip
+        status_bar("upgrading pip", command=f"{pip_exe} install --upgrade pip --user")
+
+        # Устанавливаем нужные для работы бота библиотеки
+        print("\tpip installing requirements(python libraries):")
+        for lib in open('set_env/requirements.txt', 'r', encoding='utf8'):
+            # Очищаем строку с названием бмблиотеки от пробельных символов
+            lib = lib.strip()
+            # Статус бар для каждой отдельной библиотеки
+            status_bar(f"\t{lib}", command=f"{pip_exe} install {lib}")            
     
+    # Установить настройки для vscode
     if '-v' in args:
         path_settings = os.path.normpath("./set_env/vscode/settings.json")
         with open(path_settings, "r", encoding='utf8') as read_file:
@@ -99,12 +110,13 @@ if __name__ == "__main__":
             json.dump(settings, write_file)
         
         shutil.copy(os.path.normpath("./set_env/vscode/launch.json"), os.path.normpath(".vscode/launch.json"))
-        
-        
 
+    # Всякие действия с файлом config.py
     if '--config' in args:
+        # Сделать config.py ВИДИМЫМ для git - чтобы запушить изменения в нём
         if 'visible' in args:
             os.system("git update-index --no-assume-unchanged config.py")
+        # Восстановить старую копию файла config.py
         elif 'reset' in args:
             #делаем запрос на файл конфига
             send = urlopen('https://github.com/OpenEvel/bdsm_bot/raw/master/config.py')
@@ -112,28 +124,36 @@ if __name__ == "__main__":
             # Открываем файл на запись
             with open('config.py', 'w', encoding='utf8') as conf_file:
                 conf_file.write(config_content)
-            
+        # Настроить config.py для запуска бота
         else:
-            # Делаем config.py невидимым для git
+            # Делаем config.py НЕвидимым для git
             os.system("git update-index --assume-unchanged config.py")
 
             # Получаем токен от пользователя
+            # Токен могли ввести в одной строке со всеми коммандам
+            # Удаляем все возможные комманды, что мог ввести пользователь
             args.remove('--config')
             if '--install' in args:
                 args.remove("--install")
             if '-v' in args:
                 args.remove("-v")
+
+            # Если список комманд НЕ пустой            
             if args:
+                # То в списке комманд остался только токен
                 TOKEN = args[0]
             else:
+                # Пользователь не ввёл токен
+                # Пропросим пользователя ввести токен
                 TOKEN = input("Введите токен: ")
             # В строке токина могут содержаться лишние символы
             TOKEN = TOKEN.strip()
-            # Кто-то по ошибке мог вставить в строку токин кавычки
+            # Кто-то по ошибке мог вставить в строку токена кавычки
+            # Уберём их
             trash = ["\'", "\""]
             for bad in trash:
                 TOKEN = TOKEN.replace(bad, '')
-            
+
             # Устанавливаем файл настроек для работы бота
             if is_win():
                 os.system(f'.\\venv\\Scripts\\python .\\set_env\\install_config.py {TOKEN}')
