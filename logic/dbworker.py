@@ -53,6 +53,14 @@ class DBWorker(abc.ABC):
         pass
 
     @abc.abstractclassmethod
+    def remove(self, user:User or str):
+        """
+        Удалить пользователя из таблицы
+        user - либо объект User, либо целое число - id пользователя
+        """
+        pass
+
+    @abc.abstractclassmethod
     def count(self):
         """Количество записей в таблице"""
         pass

@@ -63,6 +63,20 @@ class AdminWorker(DBWorker):
         # то есть Admin(admin[0], admin[1], admin[2], admin[3]) - то же самое но сокращённей
         return Admin(*admin)
     
+    def remove(self, user:User or str):
+        """
+        Удалить админа из таблицы
+        user - либо объект User, либо целое число - id пользователя
+        """
+        # Получаем id пользователя
+        if not getattr(user, 'id', None):
+            user_id = user
+        else:
+            user_id = user.id
+        
+        with self.connection:
+            self.cursor.execute(f"DELETE FROM {AdminWorker.TABLE} WHERE id=?", (user_id,))
+    
     def count(self):
         """Получаем количество админов в таблице"""
         with self.connection:
