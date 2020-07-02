@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Модуль, в котором реализована логика работы с базой данных
-для админа
+Модуль, в котором реализована логика работы с таблицей админов в базе данных
 """
 import sqlite3
-from ..dbworker import DBWorker, User
+from ..usersworker import DBWorker, User
 
 class Admin(User):
     """Класс Представляющий одного админа"""
