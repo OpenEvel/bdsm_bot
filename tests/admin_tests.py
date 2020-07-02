@@ -6,8 +6,10 @@ import sqlite3
 sys.path.append('..') # в vs code - не нужно
 # теперь можем импортировать модуль для работы с админами
 from utils import admins
+from utils.tools import full_path
+
 # имя тестовой базы данных
-dbname = 'tests/test_db'
+dbname = full_path(__file__, 'test_db')
 
 def isSame(a1: admins.dber.Admin, a2: admins.dber.Admin):
     """Являются ли админы одинаковыми"""
@@ -23,7 +25,9 @@ def isSame(a1: admins.dber.Admin, a2: admins.dber.Admin):
 class TestAdmin(unittest.TestCase):
     def setUp(self):
         conn = sqlite3.connect(dbname + os.extsep + 'db')
-        conn.executescript(open(dbname +  os.extsep + 'sql', encoding='utf-8').read())
+        sql_file = open(dbname + os.extsep + 'sql', encoding='utf-8')
+        conn.executescript(sql_file.read())
+        sql_file.close()
         conn.close()
 
         self.adminer = admins.dber.AdminWorker(dbname + os.extsep + 'db')
@@ -38,12 +42,14 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(answer, [1, 2, 3], "Должно быть [1, 2, 3]")
     
     def test_its_me(self):
+        """Пользователь ЕСТЬ в базе админов"""
         answer = self.adminer._is(1)
         self.assertEqual(answer, True, 'Пользователь с id=1 должен быть внутри таблицы')
     
     def test_its_not_me(self):
+        """Пользователя НЕТ в базе админов"""
         answer = self.adminer._is(4)
-        self.assertEqual(answer, False, 'Пользователь с id=4 должен быть внутри таблицы')
+        self.assertEqual(answer, False, 'Пользователь с id=4 НЕ должен быть внутри таблицы')
 
     def test_add_admin(self):
         """Добавление админа в таблицу"""
@@ -55,7 +61,7 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(self.adminer._is(admin.id), True, 'Ошибка добавления админа в таблицу')
 
     def test_count(self):
-        """вычисление количества админов в таблице"""
+        """Вычисление количества админов в таблице"""
         self.assertEqual(self.adminer.count(), 3, 'Админов должно быть 3')
     
     def test_get_one_admin(self):
@@ -67,7 +73,7 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(answer, True)
     
     def test_get_all_list(self):
-        """Возвращение админов в виде списка списков"""
+        """Возвращение админов в виде списка кортежей"""
         list_fields = self.adminer.get_all_list()
         right_list = [(1, 'a', 'aa', 'aaa'),
                       (2, 'b', 'bb', 'bbb'),
