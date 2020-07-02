@@ -15,3 +15,13 @@ def load_handlers(module_name, module_bot='bot'):
     if not bot:
         raise AttributeError(f"Переменной бота '{module_bot}' НЕТ в модуле {module_name}")
     return bot
+
+
+def full_path(file_var, relative_path):
+    """
+    file_var: переменная __file__ модуля, в которм используется эта функция
+    relative_path: относительный путь относительно папки модуля
+    возвращает полный путь относительно директроии, в которой находится модуль
+    """
+    module_dir = os.path.split(os.path.abspath(file_var))[0]
+    return os.path.normpath(os.path.join(module_dir, relative_path))
