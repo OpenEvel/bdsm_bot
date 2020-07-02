@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from bot import bot
 import config
-from .dber import Admin, AdminWorker
+from .tabler import Admin, AdminWorker
 
 
 @bot.message_handler(commands=["1"])

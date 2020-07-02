@@ -12,7 +12,7 @@ from tools import full_path
 # имя тестовой базы данных
 dbname = full_path(__file__, 'test_db')
 
-def isSame(a1: admins.dber.Admin, a2: admins.dber.Admin):
+def isSame(a1: admins.tabler.Admin, a2: admins.tabler.Admin):
     """Являются ли админы одинаковыми"""
     id = a1.id == a2.id
     username = a1.username == a2.username
@@ -31,7 +31,7 @@ class TestAdmin(unittest.TestCase):
         sql_file.close()
         conn.close()
 
-        self.adminer = admins.dber.AdminWorker(dbname + os.extsep + 'db')
+        self.adminer = admins.tabler.AdminWorker(dbname + os.extsep + 'db')
 
     def tearDown(self):
         self.adminer.close()
@@ -55,7 +55,7 @@ class TestAdmin(unittest.TestCase):
     def test_add_admin(self):
         """Добавление админа в таблицу"""
         # создаём одного админа
-        admin = admins.dber.Admin(777, 'lol', 'lol', 'lol')
+        admin = admins.tabler.Admin(777, 'lol', 'lol', 'lol')
         # добавляем его в таблицу с админами
         self.adminer.add(admin)
         # проверяем есть он там
@@ -67,7 +67,7 @@ class TestAdmin(unittest.TestCase):
     
     def test_get_one_admin(self):
         """Возвращение админа из таблицы"""
-        admin_real = admins.dber.Admin(1, 'a', 'aa', 'aaa')
+        admin_real = admins.tabler.Admin(1, 'a', 'aa', 'aaa')
         admin_table = self.adminer.get(1)
 
         answer = isSame(admin_real, admin_table)
@@ -88,7 +88,7 @@ class TestAdmin(unittest.TestCase):
         right_list = [(1, 'a', 'aa', 'aaa'),
                       (2, 'b', 'bb', 'bbb'),
                       (3, 'c', 'cc', 'ccc')]
-        real_admins = [admins.dber.Admin(*admin) for admin in right_list]
+        real_admins = [admins.tabler.Admin(*admin) for admin in right_list]
 
         a0 = isSame(table_admins[0], real_admins[0])
         a1 = isSame(table_admins[1], real_admins[1])

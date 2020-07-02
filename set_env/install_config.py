@@ -8,7 +8,7 @@ workspace_folder = os.getcwd()
 sys.path.append(workspace_folder)
 
 import sqlite3
-from logic.admins.dber import AdminWorker
+from logic.admins.tabler import AdminWorker
 
 if __name__ == "__main__":
     args = sys.argv[1:]
