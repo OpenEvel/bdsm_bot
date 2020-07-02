@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
+from utils.tools import full_path
 
 TOKEN = 'YOUR_TOKEN'
 ADMIN_ID = 'YUOR_ID' # Должно быть число а не строка
-DB_WORK = 'bases/work.db'  # Файл с базой данных о пользователях
-DB_STATES = 'bases/states.vdb'  # Файл с базой данных о состояних
+DB_WORK = full_path(__file__, 'bases/work.db')  # Файл с базой данных о пользователях
+DB_STATES = full_path(__file__, 'bases/states.vdb')  # Файл с базой данных о состояних
 
 class States(Enum):
     START_ENTER = '0'
