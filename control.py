@@ -82,7 +82,7 @@ if __name__ == "__main__":
         status_bar("making 'venv' directory", command=f"{python_global_exe} -m venv venv")
 
         # pip из виртуального окружения
-        pip_exe = ".\\venv\\Scripts\\pip" if is_win() else ".venv/bin/pip"
+        pip_exe = ".\\venv\\Scripts\\pip" if is_win() else "./venv/bin/pip"
         # Обновляем pip
         status_bar("upgrading pip", command=f"{pip_exe} install --upgrade pip --user")
 
