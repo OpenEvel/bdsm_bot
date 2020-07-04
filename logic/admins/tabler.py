@@ -3,7 +3,7 @@
 Модуль, в котором реализована логика работы с таблицей админов в базе данных
 """
 import sqlite3
-from ..usersworker import DBWorker, User
+from ..usersworker import UsersWorker, User
 
 class Admin(User):
     """Класс Представляющий одного админа"""
@@ -14,14 +14,14 @@ class Admin(User):
         """
         return f'<Admin id={self.id} name={self.username}>'
 
-class AdminWorker(DBWorker):
+class AdminsWorker(UsersWorker):
     """Работает с админами в базе данных"""
     TABLE = 'admins' # название таблицы с админами в БД
 
     def get_ids(self):
         """Получить список id всех админов"""
         with self.connection:
-            rows = self.cursor.execute(f"SELECT id FROM {AdminWorker.TABLE}").fetchall()
+            rows = self.cursor.execute(f"SELECT id FROM {AdminsWorker.TABLE}").fetchall()
         return [row[0] for row in rows]
     
     def _is(self, user_id):
@@ -34,7 +34,7 @@ class AdminWorker(DBWorker):
         # пытаемся его туда добавить
         try:
             with self.connection:
-                self.cursor.execute(f"INSERT INTO {AdminWorker.TABLE} VALUES (?,?,?,?)", 
+                self.cursor.execute(f"INSERT INTO {AdminsWorker.TABLE} VALUES (?,?,?,?)", 
                                     (user.id,
                                      user.username,
                                      user.first_name,
@@ -55,14 +55,14 @@ class AdminWorker(DBWorker):
         который обладает всеми сопутствующими свойствами
         """
         with self.connection:
-            admin = self.cursor.execute(f"SELECT * FROM {AdminWorker.TABLE} WHERE id=?", (user_id,)).fetchone()
+            admin = self.cursor.execute(f"SELECT * FROM {AdminsWorker.TABLE} WHERE id=?", (user_id,)).fetchone()
 
         # при помощи конструкции *admin - мы можем передавать значения из списка
         # в функцию __init__ класса Admin как по одному
         # то есть Admin(admin[0], admin[1], admin[2], admin[3]) - то же самое но сокращённей
         return Admin(*admin)
     
-    def remove(self, user:User or str):
+    def remove(self, user:User or int):
         """
         Удалить админа из таблицы
         user - либо объект User, либо целое число - id пользователя
@@ -78,14 +78,14 @@ class AdminWorker(DBWorker):
             return False
         else:
             with self.connection:
-                self.cursor.execute(f"DELETE FROM {AdminWorker.TABLE} WHERE id=?", (user_id,))
+                self.cursor.execute(f"DELETE FROM {AdminsWorker.TABLE} WHERE id=?", (user_id,))
             # Админа удалили все прошло успешно
             return True
     
     def count(self):
         """Получаем количество админов в таблице"""
         with self.connection:
-            rows = self.cursor.execute(f"SELECT * FROM {AdminWorker.TABLE}").fetchall()
+            rows = self.cursor.execute(f"SELECT * FROM {AdminsWorker.TABLE}").fetchall()
             # rows = self.get_ids() # можно было и так
         return len(rows)
     
@@ -95,7 +95,7 @@ class AdminWorker(DBWorker):
         один админ(элемент списка) сам тоже является КОРТЕЖЕМ
         """
         with self.connection:
-            rows = self.cursor.execute(f"SELECT * FROM {AdminWorker.TABLE}").fetchall()
+            rows = self.cursor.execute(f"SELECT * FROM {AdminsWorker.TABLE}").fetchall()
         return rows
     
     def get_all(self):

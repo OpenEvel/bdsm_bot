@@ -16,8 +16,8 @@ class User:
         self.first_name = first_name
         self.last_name = last_name
 
-class DBWorker(abc.ABC):
-    """Абстрактный класс для работы с БД sqlite"""
+class UsersWorker(abc.ABC):
+    """Абстрактный класс для работы с таблицами пользователй в базе sqlite"""
 
     # методы которые не надо переопределять
     def __init__(self, database=config.DB_WORK):
@@ -53,7 +53,7 @@ class DBWorker(abc.ABC):
         pass
 
     @abc.abstractclassmethod
-    def remove(self, user:User or str):
+    def remove(self, user:User or int):
         """
         Удалить пользователя из таблицы
         user - либо объект User, либо целое число - id пользователя
