@@ -31,7 +31,7 @@ class TestAdmin(unittest.TestCase):
         sql_file.close()
         conn.close()
 
-        self.adminer = admins.tabler.AdminWorker(dbname + os.extsep + 'db')
+        self.adminer = admins.tabler.AdminsWorker(dbname + os.extsep + 'db')
 
     def tearDown(self):
         self.adminer.close()
