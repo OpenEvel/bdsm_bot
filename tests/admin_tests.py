@@ -29,6 +29,8 @@ def isSame(a1: admins.tabler.Admin, a2: admins.tabler.Admin):
 
 class TestAdmin(unittest.TestCase):
     def setUp(self):
+        if os.path.exists(REAL_DB):
+            os.remove(REAL_DB)
         conn = sqlite3.connect(REAL_DB)
         sql_file = open(SQL_DB, encoding='utf-8')
         conn.executescript(sql_file.read())
