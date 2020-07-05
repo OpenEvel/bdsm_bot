@@ -20,6 +20,8 @@ class TestState(unittest.TestCase):
         sql_file.close()
         conn.close()
 
+        set_state(1, States.AUTHORIZATED)
+
     def tearDown(self):
         os.remove(dbname + os.extsep + 'db')
 
@@ -28,7 +30,7 @@ class TestState(unittest.TestCase):
         state = get_state(2)
         self.assertEqual(States.START_ENTER, state, "Состояние пользователя, которого нет в таблице States.START_ENTER")
     
-    def test_get_state_user__in_table(self):
+    def test_get_state_user_in_table(self):
         """Правильно ли получает пользователя, который ЕСТЬ в таблице"""
         stater = StatesWorker()
         print(stater.get_ids())
@@ -37,6 +39,11 @@ class TestState(unittest.TestCase):
         state = get_state(1)
         self.assertEqual(States.AUTHORIZATED, state, "Состояние пользователя, который есть в таблице States.AUTHORIZATED")
 
+    def test_set_state_for_new_user(self):
+        """Правильно ли задаёт состояние для нового пользователя"""
+        set_state(3, States.AUTHORIZATED)
+        state = get_state(3)
+        self.assertEqual(States.AUTHORIZATED, state, "Состояние пользователя должно быть States.AUTHORIZATED")
     
 if __name__ == "__main__":
     unittest.main()

@@ -26,5 +26,4 @@ CREATE TABLE IF NOT EXISTS `admins` (
 INSERT INTO "admins" VALUES (1,'a','aa','aaa');
 INSERT INTO "admins" VALUES (2,'b','bb','bbb');
 INSERT INTO "admins" VALUES (3,'c','cc','ccc');
-INSERT INTO "states" VALUES (1,'3');
 COMMIT;
