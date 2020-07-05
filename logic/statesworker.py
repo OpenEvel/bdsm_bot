@@ -25,21 +25,20 @@ class StatesWorker:
         """Закрываем текущее соединение с БД"""
         self.connection.close()
     
-    def gen_ids(self):
-        """Получить объект генератоа всех id из таблицы состояний"""
+    def get_ids(self):
+        """Получить список id всех админов"""
         with self.connection:
-            rows = self.cursor.execute(f"SELECT id FROM {StatesWorker.TABLE}").fetchall()        
-        for row in rows:
-            yield row[0]
+            rows = self.cursor.execute(f"SELECT id FROM {StatesWorker.TABLE}").fetchall()
+        return [row[0] for row in rows]
     
     def __getitem__(self, user_id):
-        if user_id not in self.gen_ids():
+        if user_id not in self.get_ids():
             raise IDError
 
         with self.connection:
             rows = self.cursor.execute(f"SELECT state FROM {StatesWorker.TABLE} WHERE id=?", (user_id,)).fetchall()
         
-        value = rows[0][0][1]
+        value = rows[0][0]
 
         for state in States:
             if state.value == value:
@@ -47,7 +46,7 @@ class StatesWorker:
       
     def __setitem__(self, user_id:int, state:States):
         # Пользователь есть в таблице
-        if user_id not in self.gen_ids():
+        if user_id not in self.get_ids():
             # пытаемся добавить состояние пользователя
             with self.connection:
                 self.cursor.execute(f"INSERT INTO {StatesWorker.TABLE} VALUES (?,?)", (user_id, state.value))
@@ -58,7 +57,7 @@ class StatesWorker:
                 self.cursor.execute(f"UPDATE {StatesWorker.TABLE} SET state=? WHERE id=?", (state.value, user_id))
     
     def __delitem__(self, user_id):
-        if user_id not in self.gen_ids():
+        if user_id not in self.get_ids():
             # Пользователь нет в таблице, значит удалять его и не надо
             return False
         else:
@@ -75,11 +74,14 @@ def get_state(user_id:int):
         state = stater[user_id]
     except IDError:
         stater[user_id] = States.START_ENTER
+        stater.close()
         return States.START_ENTER
     else:
+        stater.close()
         return state
 
 def set_state(user_id:int, state:States):
     """Сохраняем текущее «состояние» пользователя в нашу базу состояний"""
     stater = StatesWorker()
     stater[user_id] = state
+    stater.close()
