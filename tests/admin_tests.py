@@ -4,13 +4,17 @@ import os
 import unittest
 import sqlite3
 # Делаем видимыми модули уровнем выше для наших тестов
-sys.path.append('..') # в vs code - не нужно
+module_dir = os.path.split(os.path.abspath(__file__))[0]
+workspace_dir = os.path.normpath(os.path.join(module_dir, os.pardir))
+sys.path.append(workspace_dir)
 # теперь можем импортировать модуль для работы с админами
 from logic import admins
 from tools import full_path
 
 # имя тестовой базы данных
-dbname = full_path(__file__, 'test_db')
+DB_NAME = full_path(__file__, 'test_db')
+REAL_DB = DB_NAME + os.extsep + 'db'
+SQL_DB = DB_NAME+ os.extsep + 'sql'
 
 def isSame(a1: admins.tabler.Admin, a2: admins.tabler.Admin):
     """Являются ли админы одинаковыми"""
@@ -25,17 +29,17 @@ def isSame(a1: admins.tabler.Admin, a2: admins.tabler.Admin):
 
 class TestAdmin(unittest.TestCase):
     def setUp(self):
-        conn = sqlite3.connect(dbname + os.extsep + 'db')
-        sql_file = open(dbname + os.extsep + 'sql', encoding='utf-8')
+        conn = sqlite3.connect(REAL_DB)
+        sql_file = open(SQL_DB, encoding='utf-8')
         conn.executescript(sql_file.read())
         sql_file.close()
         conn.close()
 
-        self.adminer = admins.tabler.AdminsWorker(dbname + os.extsep + 'db')
+        self.adminer = admins.tabler.AdminsWorker(REAL_DB)
 
     def tearDown(self):
         self.adminer.close()
-        os.remove(dbname + os.extsep + 'db')
+        os.remove(REAL_DB)
 
     def test_get_ids(self):
         """Правильно ли возвращает id админов"""
