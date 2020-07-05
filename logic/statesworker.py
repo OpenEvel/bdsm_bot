@@ -66,9 +66,9 @@ class StatesWorker:
             # Админа удалили все прошло успешно
             return True
 
-def get_state(user_id:int):
+def get_state(user_id:int, database=config.DB_WORK):
     """Пытаемся узнать состояние пользователя"""
-    stater = StatesWorker()
+    stater = StatesWorker(database)
 
     try:
         state = stater[user_id]
@@ -80,8 +80,8 @@ def get_state(user_id:int):
         stater.close()
         return state
 
-def set_state(user_id:int, state:States):
+def set_state(user_id:int, state:States, database=config.DB_WORK):
     """Сохраняем текущее «состояние» пользователя в нашу базу состояний"""
-    stater = StatesWorker()
+    stater = StatesWorker(database)
     stater[user_id] = state
     stater.close()

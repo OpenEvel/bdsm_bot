@@ -20,29 +20,23 @@ class TestState(unittest.TestCase):
         sql_file.close()
         conn.close()
 
-        set_state(1, States.AUTHORIZATED)
-
     def tearDown(self):
         os.remove(dbname + os.extsep + 'db')
 
     def test_get_state_user_not_in_table(self):
         """Правильно ли получает пользователя, которого НЕТ в таблице"""
-        state = get_state(2)
+        state = get_state(2, database=dbname + os.extsep + 'db')
         self.assertEqual(States.START_ENTER, state, "Состояние пользователя, которого нет в таблице States.START_ENTER")
     
     def test_get_state_user_in_table(self):
         """Правильно ли получает пользователя, который ЕСТЬ в таблице"""
-        stater = StatesWorker()
-        print(stater.get_ids())
-        print('suka')
-        stater.close()
-        state = get_state(1)
+        state = get_state(1, database=dbname + os.extsep + 'db')
         self.assertEqual(States.AUTHORIZATED, state, "Состояние пользователя, который есть в таблице States.AUTHORIZATED")
 
     def test_set_state_for_new_user(self):
         """Правильно ли задаёт состояние для нового пользователя"""
-        set_state(3, States.AUTHORIZATED)
-        state = get_state(3)
+        set_state(3, States.AUTHORIZATED, database=dbname + os.extsep + 'db')
+        state = get_state(3, database=dbname + os.extsep + 'db')
         self.assertEqual(States.AUTHORIZATED, state, "Состояние пользователя должно быть States.AUTHORIZATED")
     
 if __name__ == "__main__":
