@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import sqlite3
 import telebot
 
-workspace_folder = os.getcwd()
+# Делаем видимыми модули уровнем
+module_dir = os.path.split(os.path.abspath(__file__))[0]
+workspace_dir = os.path.normpath(os.path.join(module_dir, os.pardir))
+sys.path.append(workspace_dir)
 
-sys.path.append(workspace_folder)
-
-import sqlite3
 from logic.admins.tabler import AdminsWorker
 
 if __name__ == "__main__":
@@ -20,7 +21,7 @@ if __name__ == "__main__":
     def repeat_all_messages(message): # Название функции не играет никакой роли
         ADMIN_ID = message.from_user.id
         # config_content = config_template.format(TOKEN=TOKEN, ADMIN_ID=ADMIN_ID)
-        f_r = open(os.path.join(workspace_folder, 'config.py'), 'r', encoding='utf-8')
+        f_r = open(os.path.join(workspace_dir, 'config.py'), 'r', encoding='utf-8')
         config_content = ""
         for line in f_r:
             if line.startswith("TOKEN ="):
@@ -30,7 +31,7 @@ if __name__ == "__main__":
             config_content += line
         f_r.close()
 
-        f_w = open(os.path.join(workspace_folder, 'config.py'), 'w', encoding='utf-8')
+        f_w = open(os.path.join(workspace_dir, 'config.py'), 'w', encoding='utf-8')
         f_w.write(config_content)
         f_w.close()
         bot.send_message(message.chat.id, 'Конфиг обновлён')
