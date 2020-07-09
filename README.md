@@ -1,5 +1,5 @@
 # _bdsm_bot_
-Это крутой телеграм бот для управления проектами, который может работать как в Windows так и в Linux
+#### Это крутой телеграм бот для управления проектами, который может работать как в Windows так и в Linux
 
 ---
 ## Настройка проекта для работы
@@ -68,6 +68,34 @@
 
 Не забываем нажать `ОК` или `Apply`  
 ![image](https://user-images.githubusercontent.com/37779327/87088175-fdcb3200-c23c-11ea-9a8f-9b027116ad35.png)
+
+### __4. Запуск бота__
+Различается от IDE, главное помнить, что нужно запускать файл **bot.py**
+
+# Дополнительно
+Пункты 1-3 можно объединить в одну комманду:  
+Создать виртуальное окружение и настроить бота и его **_config.py_**
+```console
+py -m pdm --install --config YOUR_TOKEN
+```
+Причём порядок следования аргументов не имеет значения. Можно писать как хочешь
+```console
+py -m pdm --config --install YOUR_TOKEN
+```
+```console
+py -m pdm --config YOUR_TOKEN --install
+```
+```console
+py -m pdm YOUR_TOKEN --config --install
+```
+
+Или в комманде просто не указывать токен, его потом предложат ввести
+```console
+py -m pdm --config --install
+```
+```console
+py -m pdm --install --config
+```
 
 ---
 
