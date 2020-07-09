@@ -1,8 +1,7 @@
 # _bdsm_bot_
 #### Это крутой телеграм бот для управления проектами, который может работать как в Windows так и в Linux
 
-<a href="url"><img src="https://user-images.githubusercontent.com/37779327/87092364-f52a2a00-c243-11ea-90c5-b5609cfa02ae.jpg" align="left" height="60" width="60" ></a>
-<p>Если ты крутой разраб, то заходи на нашу вики <a href="https://github.com/OpenEvel/bdsm_bot/wiki">wiki</a></p>
+Если ты крутой разраб, то заходи на нашу [wiki](https://github.com/OpenEvel/bdsm_bot/wiki)
 
 ---
 ## Настройка проекта для работыы
