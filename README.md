@@ -1,12 +1,11 @@
 # _bdsm_bot_
 #### Это крутой телеграм бот для управления проектами, который может работать как в Windows так и в Linux
 
+<a href="url"><img src="https://user-images.githubusercontent.com/37779327/87092364-f52a2a00-c243-11ea-90c5-b5609cfa02ae.jpg" align="left" height="60" width="60" ></a>
 Если ты разарб, то заходи на нашу [wiki](https://github.com/OpenEvel/bdsm_bot/wiki)
-<a href="url"><img src="https://user-images.githubusercontent.com/37779327/87091757-e1ca8f00-c242-11ea-9881-e5c429f127a2.jpg" align="left" height="60" width="60" ></a>
-
 
 ---
-## Настройка проекта для работы
+## Настройка проекта для работыы
 
 НИИ8 был разработан специальный скрипт **pdm.py** (project deploy manager), который призван облегчить жизнь программисту.
 
