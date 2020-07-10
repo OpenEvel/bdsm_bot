@@ -71,7 +71,7 @@ def status_bar(title:str=None, *, command:str, ts:float=0.25):
 if __name__ == "__main__":
     # Переменные командной строки
     # Представляет собой список всех слов, что идут после pdm
-    # в командве: python -m pdm --config --venv -vscode и тд
+    # в командве: python -m pdm --config --venv --vscode и тд
     args = sys.argv[1:]
 
     # Установить виртуальное окружение со всеми библиотеками
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             status_bar(f"\t{lib}", command=f"{pip_exe} install {lib}")            
     
     # Установить настройки для vscode
-    if '-vscode' in args:
+    if '--vscode' in args:
         path_settings = os.path.normpath("./set_env/vscode/settings.json")
         with open(path_settings, "r", encoding='utf8') as read_file:
             settings = json.load(read_file)
@@ -135,8 +135,8 @@ if __name__ == "__main__":
             args.remove('--config')
             if '--venv' in args:
                 args.remove("--venv")
-            if '-vscode' in args:
-                args.remove("-vscode")
+            if '--vscode' in args:
+                args.remove("--vscode")
 
             # Если список комманд НЕ пустой            
             if args:
