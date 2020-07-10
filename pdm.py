@@ -70,12 +70,12 @@ def status_bar(title:str=None, *, command:str, ts:float=0.25):
 
 if __name__ == "__main__":
     # Переменные командной строки
-    # Представляет собой список всех слов, что идут после control
-    # в командве: python -m control --config --install -v и тд
+    # Представляет собой список всех слов, что идут после pdm
+    # в командве: python -m pdm --config --venv -vscode и тд
     args = sys.argv[1:]
 
     # Установить виртуальное окружение со всеми библиотеками
-    if '--install' in args:
+    if '--venv' in args:
         # Системный интерпретатор python
         python_global_exe = "python" if is_win() else 'python3'
         # Создаём виртуальное окружение
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             status_bar(f"\t{lib}", command=f"{pip_exe} install {lib}")            
     
     # Установить настройки для vscode
-    if '-v' in args:
+    if '-vscode' in args:
         path_settings = os.path.normpath("./set_env/vscode/settings.json")
         with open(path_settings, "r", encoding='utf8') as read_file:
             settings = json.load(read_file)
@@ -133,10 +133,10 @@ if __name__ == "__main__":
             # Токен могли ввести в одной строке со всеми коммандам
             # Удаляем все возможные комманды, что мог ввести пользователь
             args.remove('--config')
-            if '--install' in args:
-                args.remove("--install")
-            if '-v' in args:
-                args.remove("-v")
+            if '--venv' in args:
+                args.remove("--venv")
+            if '-vscode' in args:
+                args.remove("-vscode")
 
             # Если список комманд НЕ пустой            
             if args:
