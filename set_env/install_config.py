@@ -40,8 +40,6 @@ if __name__ == "__main__":
         import config
         if os.path.exists(config.DB_WORK):
             os.remove(config.DB_WORK)
-        if os.path.exists(config.DB_STATES):
-            os.remove(config.DB_STATES)
 
         conn = sqlite3.connect(config.DB_WORK)
         f_sql = open(config.DB_WORK[:-2] + 'sql', encoding='utf-8')
