@@ -74,11 +74,11 @@ def get_state(user_id:int, database=config.DB_WORK):
         state = stater[user_id]
     except IDError:
         stater[user_id] = States.START_ENTER
-        stater.close()
         return States.START_ENTER
     else:
-        stater.close()
         return state
+    finally:
+        stater.close()
 
 def set_state(user_id:int, state:States, database=config.DB_WORK):
     """Сохраняем текущее «состояние» пользователя в нашу базу состояний"""
