@@ -53,7 +53,7 @@ class UsersWorker(abc.ABC):
         pass
 
     @abc.abstractclassmethod
-    def remove(self, user:User or int):
+    def remove(self, user):
         """
         Удалить пользователя из таблицы
         user - либо объект User, либо целое число - id пользователя

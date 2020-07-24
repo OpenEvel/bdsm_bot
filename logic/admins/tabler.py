@@ -62,7 +62,7 @@ class AdminsWorker(UsersWorker):
         # то есть Admin(admin[0], admin[1], admin[2], admin[3]) - то же самое но сокращённей
         return Admin(*admin)
     
-    def remove(self, user:User or int):
+    def remove(self, user):
         """
         Удалить админа из таблицы
         user - либо объект User, либо целое число - id пользователя
