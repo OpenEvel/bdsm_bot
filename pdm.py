@@ -119,7 +119,7 @@ if __name__ == "__main__":
         # Восстановить старую копию файла config.py
         elif 'reset' in args:
             #делаем запрос на файл конфига
-            send = urlopen('https://github.com/OpenEvel/bdsm_bot/raw/master/config.py')
+            send = urlopen('https://raw.githubusercontent.com/OpenEvel/bdsm_bot/master/config.py')
             config_content = send.read().decode('utf8')
             # Открываем файл на запись
             with open('config.py', 'w', encoding='utf8') as conf_file:
