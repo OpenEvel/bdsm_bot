@@ -1,6 +1,12 @@
 # _bdsm_bot_
 #### Это крутой телеграм бот для управления проектами, который может работать как в Windows так и в Linux
 
+__Пример использования:__
+
+```console
+py -m pdm --venv --config --vscode
+```
+
 Минимальня версия python - **3.6**
 
 Если ты крутой разраб, то заходи на нашу [wiki](https://github.com/OpenEvel/bdsm_bot/wiki)
