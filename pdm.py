@@ -83,9 +83,7 @@ if __name__ == "__main__":
 
         # pip из виртуального окружения
         pip_exe = ".\\venv\\Scripts\\pip" if is_win() else "./venv/bin/pip"
-        # Обновляем pip
-        status_bar("upgrading pip", command=f"{pip_exe} install --upgrade pip --user")
-
+        
         # Устанавливаем нужные для работы бота библиотеки
         print("\tpip installing requirements(python libraries):")
         for lib in open('set_env/requirements.txt', 'r', encoding='utf8'):
